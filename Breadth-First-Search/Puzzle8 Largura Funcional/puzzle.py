@@ -143,10 +143,10 @@ print("\n")
 start_time = time.time()
 
 # # Run the BFS and print the result
-# result = order_bfs(initial_state_obj)
+result = order_bfs(initial_state_obj)
 
 # Run the DFS and print result
-result = order_dfs(initial_state_obj)
+# result = order_dfs(initial_state_obj)
 
 # Record end time
 end_time = time.time()
