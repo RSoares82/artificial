@@ -2,7 +2,7 @@ from typing import NamedTuple, Optional
 
 initial_state = [
         [1, 2, 3],
-        [4, 6, 0],
+        [4, 0, 6],
         [7, 5, 8]
     ]
 
@@ -58,7 +58,7 @@ def generate_successors(state, visited):
             new_state = [r.copy() for r in state_2d]  # Copy the board
             new_state[row][col], new_state[new_row][new_col] = new_state[new_row][new_col], new_state[row][col]
             if convert_to_tuple(new_state) not in visited:
-                generations += 1   
+                generations += 1
                 successors.insert(0,State(board=convert_to_tuple(new_state),
                                             generation=generations,
                                             parent=state,
@@ -69,46 +69,64 @@ def generate_successors(state, visited):
 
     return successors
 
-# Recursive DFS function
-def dfs_recursive(state, goal, visited=None, max_depth=0):
-    """Performs a recursive DFS to find the goal state with a depth limit."""
-    if visited is None:
+# Iterative DFS function
+# Iterative DFS function with depth increase
+def dfs_iterative(state, goal):
+    """Performs an iterative DFS to find the goal state with increasing depth limits."""
+    max_depth = 1  # Start with depth 1
+    while True:  # Keep searching until we find a solution
+        print(f"Searching with depth limit {max_depth}...")
         visited = set()  # Initialize the visited set
+        stack = [(state, max_depth)]  # Stack holds tuples of (state, current depth, max_depth)
 
-    if state.board in visited:
-        return None  # Skip already visited states
+        while stack:
+            current_state, current_depth = stack.pop(0)  # Pop the latest state from the stack
 
-    visited.add(state.board)  # Mark state as visited
+            if current_state.board in visited:
+                continue  # Skip already visited states
 
-    if state.board == goal:
-        print("Goal reached!")
-        return state  # Return the solution state
+            visited.add(current_state.board)  # Mark state as visited
 
-    if state.depth > max_depth:
-        print("\n\n\n####### Expansao do Estado ##########")
-        print_board(state)
-        for next_state in generate_successors(state, visited):
-            result = dfs_recursive(next_state, goal, visited, max_depth)
-            if result:  # If a solution is found, return it
-                return result
-    else:
-        return None
+            if current_state.board == goal:
+                print("Goal reached!")
+                return current_state  # Return the solution state
 
-    return None  # If no solution found, return None
+            if current_state.depth > 0:
+                print("\n\n\n####### Expansao do Estado ##########")
+                print_board(current_state)
+                for next_state in generate_successors(current_state, visited):
+                    # When adding the successor, we set its depth to the current depth + 1
+                    stack.append((next_state, current_depth - 1))
+
+        # If no solution is found, increment depth and restart from initial state
+        max_depth += 1
+        # Recreate the state with the new increased depth
+        state = State(
+            board=state.board,  # Keep the current state board
+            generation=generations,
+            parent=None,  # You may want to reset the parent as well
+            depth=max_depth,  # Update the depth of the state
+            expansion=0
+        )
+
+        # Reset visited set to start fresh at the new depth level
+        visited = set()
+
+    return None
 
 # Example Usage
 initial_state = State(
     board=convert_to_tuple(initial_state),
     generation=generations,
     parent=None,
-    depth=3,
+    depth=1,
     expansion=0
 )
 
 goal_objective = convert_to_tuple(objective_state)
 
 # print_board(initial_state)
-solution = dfs_recursive(initial_state, goal_objective, max_depth=0)
+solution = dfs_iterative(initial_state, goal_objective)
 
 if solution:
     print("Solution found!")
