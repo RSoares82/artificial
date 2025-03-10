@@ -1,6 +1,6 @@
 initial_state = [
         [1, 2, 3],
-        [4, 6, 0],
+        [4, 0, 6],
         [7, 5, 8]
     ]
 
@@ -11,8 +11,9 @@ objective_state = [
     ]
 
 global_depth = 1
-geracao = 0
+geracao = 1
 expansao = 0
+seen_states = set()
 
 def convert_to_tuple(state_2d):
     return tuple(num for row in state_2d for num in row)
@@ -28,17 +29,23 @@ class Node:
 
 def iterative_deepening_search(problem):
     global global_depth
+    global seen_states
+    global geracao
     while True:
         result = depth_limited_search(problem)
         if result != "cutoff":
             return result
         global_depth += 1
+        seen_states = set()
+        geracao += 1
+        print(f"\n*** Aumento do Nivel para {global_depth} ***\n")
 
 
 def depth_limited_search(problem, limit=0):
     global expansao
     global geracao
     frontier = [Node(problem.initial)]
+    seen_states.add(problem.initial)
     result = "failure"
     while frontier:
         node = frontier.pop()
@@ -49,24 +56,29 @@ def depth_limited_search(problem, limit=0):
             print(f"Expanção: {expansao}: {node.state} limite")
             result = "cutoff"
         else:
-            if not is_cycle(node):
-                expansao += 1
-                geracao += 1
-                print(f"Geracao: {geracao} Expanção: {expansao} estado: {node.state}")
-                for child_state in problem.generate_successors(node.state):
+            #if not is_cycle(node):
+            expansao += 1
+            #geracao += 1
+            print(f"Geracao: {geracao} Expanção: {expansao} estado: {node.state}")
+            for child_state in problem.generate_successors(node.state):
+                # Check if the state has already been seen
+                if child_state not in seen_states:
                     frontier.append(Node(child_state, node))
+                    geracao += 1
+                    print(f"Geracao: {geracao} estado: {tuple(child_state)}")
+                    seen_states.add(child_state)  # Mark this state as seen
     return result
 
 
-def is_cycle(node):
-    current = node
-    seen_states = set()
-    while current:
-        if current.state in seen_states:
-            return True
-        seen_states.add(current.state)
-        current = current.parent
-    return False
+# def is_cycle(node):
+#     current = node
+#     global seen_states
+#     while current:
+#         if current.state in seen_states:
+#             return True
+#         seen_states.add(current.state)
+#         current = current.parent
+#     return False
 
 
 # Example Problem Class, creates the instance class for the problem
@@ -100,8 +112,7 @@ def simple_graph_problem(initial, goal, depth):
                     new_state = list(state)
                     new_state[zero_index], new_state[new_index] = new_state[new_index], new_state[zero_index]
                     neighbors.append(tuple(new_state))
-                    geracao += 1
-                    print(f"Geracao: {geracao} estado: {tuple(new_state)}")
+
 
             #self.expansion += 1  # Increase expansion order count
             #print(neighbors)
