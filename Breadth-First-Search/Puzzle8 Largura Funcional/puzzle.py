@@ -69,7 +69,6 @@ def generate_successors(state):
 
     return successors
 
-
 def order_bfs(start_node):
     visited = set()
     queue = deque([start_node])
@@ -83,11 +82,11 @@ def order_bfs(start_node):
         board_tuple = current_node.convert_state_to_tuple()
         if board_tuple not in visited:
             visited.add(board_tuple)
-            result = is_goal_state(objective_state, current_node)
-
-            if result:
-                print("Goal found!")
-                return current_node
+            # result = is_goal_state(objective_state, current_node)
+            #
+            # if result:
+            #     print("Goal found!")
+            #     return current_node
 
             successors = generate_successors(current_node.board)
             if successors:
@@ -99,6 +98,13 @@ def order_bfs(start_node):
                     generation += 1
                     child_state = PuzzleState(item, parent=current_node, g=generation, n=current_node.n + 1, exp=expansions)
                     queue.append(child_state)  # Append to the end for BFS
+                    print(f"{child_state.print_state()}")
+                    result = is_goal_state(objective_state, child_state)
+
+                    if result:
+                        print("Goal found!")
+                        return current_node
+
 
     print("Goal not found")
     return False
@@ -151,8 +157,8 @@ result = order_bfs(initial_state_obj)
 # Record end time
 end_time = time.time()
 
-if result:
-    result.print_state()
+# if result:
+#     result.print_state()
 
 # Print the time it took to find the solution
 elapsed_time = end_time - start_time
