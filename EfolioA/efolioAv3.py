@@ -579,6 +579,8 @@ for index, item in enumerate(solucaoFinal):
         print(f"Parte {index + 1}, passos: {len(caminho)}")
         imprimeGrelha2(caminho, grelha)
         print(f"Tempo: {item.tempoTotal} ({index + 1}/{total}), custo: {item.custoTotal}")
+        print(f"Expansoes: {item.expansao}")
+        print(f"Geracoes: {item.geracao}")
     else:
         item_anterior = solucaoFinal[index - 1]
         caminho_anterior = len(refazerCaminho(item_anterior))
@@ -589,5 +591,7 @@ for index, item in enumerate(solucaoFinal):
         print(f"Parte {index + 1}, passos: {passos}")
         imprimeGrelha2(caminho, grelha)
         print(f"Tempo: {item.tempoTotal} ({index + 1}/{total}), custo: {item.custoTotal}")
+        print(f"Expansoes: {item.expansao}")
+        print(f"Geracoes: {item.geracao}")
 
 print(f"\nTime taken to find the solution: {elapsed_time:.4f} seconds")
