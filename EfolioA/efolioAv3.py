@@ -2,11 +2,128 @@ from collections import deque
 import time
 
 grelha = [
-    [1, 1, 1, 1, -1],
-    [1, 10, 1, 2, 10],
-    [1, -2, 10, 2, 1],
-    [10, 10, 1, 1, 1],
-    [-1, 1, 1, 2, -2]
+    [
+        [1, 1, 1, 1, -1],
+        [1, 10, 1, 2, 10],
+        [1, -2, 10, 2, 1],
+        [10, 10, 1, 1, 1],
+        [-1, 1, 1, 2, -2]
+    ],
+    [
+        [-1,1,2,2,-1],
+        [1,2,1,1,10],
+        [1,1,10,2,2],
+        [10,2,1,10,1],
+        [-1,2,1,10,-2],
+    ],
+    [
+        [1, 1, 1, 1, 10, -2, 1],
+        [1, -2, 10, 1, 1, 10, 1],
+        [1, 10, 1, 10, 1, 1, 1],
+        [1, 1, -2, 10, 1, 2, 1],
+        [2, 1, 10, 1, 2, 1, 10],
+        [2, 1, 1, 1, 2, 10, -3],
+        [1, -1, 10, 1, 1, 1, 1],
+    ],
+    [
+        [1, -2, 2, 2, 2, -2, 1],
+        [1, 1, 1, 1, 1, 1, 1],
+        [1, 10, 10, 10, 10, 10, 1],
+        [1, 1, -2, 10, 1, 2, 1],
+        [2, 2, 2, 10, 2, 10, 10],
+        [2, 1, 2, 10, 2, 10, -3],
+        [1, -1, 2, 1, 1, 1, 1],
+    ],
+    [
+        [-2, 10, 1, 1, 1, 1, -2, 1, 1],
+        [1, 2, -2, 10, 10, 1, 1, 10, 2],
+        [1, 1, 1, 1, 1, 10, 10, 1, 1],
+        [1, 10, 10, 1, 10, -2, 1, 1, 1],
+        [1, 1, 10, 1, 1, 1, 2, 10, 1],
+        [2, 1, 1, 10, 1, 2, 10, 1, 1],
+        [10, 10, 2, 2, 2, 2, 10, -3, 1],
+        [2, 1, 1, 10, 1, 2, 10, 1, 10],
+        [-8, 10, 1, 1, 1, 1, 1, 1, 1]
+    ],
+    [
+        [1, -5, 1, 10, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 10, 1, 2, 1, 10, 1, 1, 1, 1],
+        [1, 10, 10, 1, 1, 1, 1, 10, 1, -3, 1],
+        [1, 2, -1, 10, 2, 2, 1, 2, 10, 1, 1],
+        [2, 1, 1, 1, 10, 2, 1, 1, 2, 10, 1],
+        [1, 2, 1, 1, 1, 10, -2, 1, 2, 10, 1],
+        [2, 1, 2, 10, 1, 1, 10, 1, 1, 10, 1],
+        [1, -1, 1, 10, 1, 2, 1, 1, 10, 2, 1],
+        [1, 10, 10, 10, 1, 2, -1, 10, 2, 2, 1],
+        [1, 1, 1, 1, 1, 2, 10, 1, 1, 1, -4],
+        [1, 1, -2, 2, 1, 1, 1, 2, 2, 2, 1]
+    ],
+    [
+        [1, 1, 1, 1, 1, 10, 1, 2, 1, 1, 1, 1, 1],
+        [-1, 10, 1, 10, 1, 2, 10, 1, 10, 2, 10, 10, 1],
+        [10, 1, 1, 10, 1, 2, 10, 2, 10, 1, 10, -1, 1],
+        [1, 1, 10, 1, 1, 1, -1, 1, 10, -1, 1, 10, 10],
+        [1, 10, 1, 1, 1, 10, 1, 1, 10, 10, 1, 1, 1],
+        [1, 10, -1, 10, 1, 1, 10, 1, 1, 1, 10, 10, 1],
+        [1, 10, 1, 1, 10, 1, 1, 10, 10, 1, 1, 10, 1],
+        [10, 10, 10, -1, 1, 10, 1, 1, 10, 1, 1, 10, 1],
+        [1, 2, 1, 10, 2, 1, 10, 1, 10, -1, 10, 1, 1],
+        [1, 10, 2, 1, 10, 2, 10, 1, 10, 1, 10, 1, 1],
+        [1, -1, 10, 1, 2, 1, 10, 1, 10, 1, 1, 1, 10],
+        [1, 10, 1, 10, 10, 10, 10, 1, 10, 1, 10, 10, -1],
+        [1, 1, 1, -1, 1, 1, 1, 1, 10, 1, 1, 1, 1]
+    ],
+    [
+        [-3, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, -3, 1, -2],
+        [1, 1, 1, 1, 1, 10, 10, 10, 10, 10, 1, 1, 2, 1, 2],
+        [1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, -2],
+        [1, 1, 1, 1, 1, 1, -2, 2, 1, -3, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1],
+        [1, 10, 1, 1, 1, 2, 2, 1, 2, 1, 1, 1, -1, 10, 1],
+        [1, 10, -3, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 10, 1],
+        [1, 10, 1, 1, -2, 2, 1, 1, 1, 1, 2, 2, 1, 10, 1],
+        [1, 10, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 10, 2],
+        [1, 10, -2, 2, 1, 2, 1, 2, 1, 1, 1, 1, 1, 10, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2],
+        [-2, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1, 2, 1, -3, 1],
+        [1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 2, 1, 1, 1, 10, 10, 10, 10, 10, 1, 1, 2, 1, 1],
+        [1, 1, -3, 1, 1, 1, 1, 1, 1, 1, 1, -3, 1, 1, -4]
+    ],
+    [
+        [-3, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, -3, 1, -2],
+        [1, 1, 1, 1, 1, 10, 10, 10, 10, 10, 1, 1, 2, 1, 2],
+        [1, 1, 1, 1, 1, 2, 1, 10, 1, 1, 1, 1, 1, 1, -2],
+        [1, 1, 1, 1, 1, 1, -2, 10, 1, -3, 1, 1, 1, 1, 1],
+        [1, 10, 10, 10, 1, 10, 1, 10, 1, 10, 1, 10, 10, 10, 1],
+        [1, 10, 1, 1, 1, 10, 2, 10, 2, 10, 1, 1, -1, 10, 1],
+        [1, 10, -3, 1, 2, 10, 1, 1, 1, 10, 1, 1, 1, 10, 1],
+        [1, 10, 1, 1, -2, 10, 10, 10, 10, 10, 2, 2, 1, 10, 1],
+        [1, 10, 1, 1, 1, 10, 2, 1, 1, 10, 1, 1, 1, 10, 2],
+        [1, 10, -2, 2, 1, 10, 1, 10, 1, 10, 1, 1, 1, 10, 1],
+        [1, 10, 10, 10, 1, 10, 1, 10, 1, 10, 2, 10, 10, 10, 2],
+        [-2, 1, 1, 2, 1, 2, 1, 10, 1, 2, 1, 2, 1, -3, 1],
+        [1, 1, 1, 1, 2, 1, 1, 10, 1, 1, 1, 1, 1, 1, 1],
+        [1, 2, 1, 1, 1, 10, 10, 10, 10, 10, 1, 1, 2, 1, 1],
+        [1, 1, -3, 1, 1, 1, 1, 1, 1, 1, 1, -3, 1, 1, -4]
+    ],
+    [
+        [-6, 10, 1, 1, 1, 1, 1, 1, 2, 2, 2, 10, -6, 1, -4],
+        [1, 10, 1, 10, 1, 10, 10, 10, 10, 10, 1, 1, 2, 10, 2],
+        [1, 10, 1, 10, 1, 2, 1, 10, 1, 10, 1, 10, 1, 10, -4],
+        [1, 1, 1, 10, 1, 10, -4, 10, 1, -6, 1, 10, 1, 1, 1],
+        [1, 10, 10, 10, 1, 10, 1, 10, 1, 10, 1, 10, 10, 10, 1],
+        [1, 10, 1, 1, 1, 10, 2, 10, 2, 10, 1, 10, -2, 10, 1],
+        [1, 10, -6, 10, 2, 10, 1, 1, 1, 10, 1, 10, 1, 10, 1],
+        [1, 10, 1, 10, -4, 10, 10, 10, 10, 10, 2, 2, 1, 10, 1],
+        [1, 10, 1, 10, 10, 10, 2, 1, 1, 10, 10, 10, 1, 10, 2],
+        [1, 10, -4, 2, 1, 1, 1, 10, 1, 10, 1, 1, 1, 10, 1],
+        [1, 10, 10, 10, 1, 10, 1, 10, 1, 10, 2, 10, 10, 10, 2],
+        [-4, 1, 1, 2, 1, 10, 1, 10, 1, 2, 1, 2, 1, -6, 1],
+        [10, 10, 1, 10, 2, 10, 1, 10, 1, 10, 1, 10, 10, 10, 10],
+        [1, 10, 1, 10, 1, 10, 10, 10, 10, 10, 1, 10, 2, 10, 1],
+        [1, 1, -6, 10, 1, 1, 1, 1, 1, 1, 1, -6, 1, 1, -8]
+    ]
 ]
 
 expansao = 0
@@ -14,7 +131,7 @@ geracao = 1
 
 # Define o Estado da Grelha
 class EstadoGrelha:
-    def __init__(self, pai=None, movimento=None, geracao=0, nivel=0, expansao=0, posicao=None, custo=0, tempototal=10, pessoassalvas = 0, custototal=0):
+    def __init__(self, pai=None, movimento=None, geracao=0, nivel=0, expansao=0, posicao=None, custo=0, tempototal=0, pessoassalvas = 0, custototal=0):
         self.pai = pai
         self.movimento = movimento
         self.geracao = geracao
@@ -122,9 +239,9 @@ def manhattan_distance(start, exit):
     return abs(start[0] - exit[0]) + abs(start[1] - exit[1])
 
 
-def saidaMaisProxima(coordinates):
+def saidaMaisProxima(coordinates, portas):
     # List of possible exits
-    saidas = [(0, 2), (2, 0), (4, 2), (2, 4)]
+    #saidas = [(0, 2), (2, 0), (4, 2), (2, 4)]
 
     # Initialize the minimum distance as a large number
     min_distance = float('inf')
@@ -133,7 +250,7 @@ def saidaMaisProxima(coordinates):
     # Loop through all coordinates and find the closest one
     for coord in coordinates:
         # Check distance to each exit and pick the closest one
-        for saida in saidas:
+        for saida in portas:
             distance = manhattan_distance(coord, saida)
             if distance < min_distance:
                 min_distance = distance
@@ -172,18 +289,27 @@ def gerarSucessores(grelha, portas, estadoAtual, k):
             # Verificação de Parede
             if grelha[new_row][new_col] != 10:
                 # print(f"( {grelha[new_row][new_col]} )")
-                possible_moves.append((new_row, new_col))
+                if (new_row, new_col) == estadoAtual.pai.posicao:
+                    possible_moves.append((new_row, new_col))
+                else:
+                    possible_moves.insert(0, (new_row, new_col))
+
 
         #print(f"posicao pai: {estadoAtual.pai.posicao}")
 
         # Se os sucessores forem pelo menos dois, evitar percorrer o caminho contrario
         # A não ser que só tenhamos esse caminho para voltar para traz
-        if len(possible_moves) >= 2 and estadoAtual.pai.posicao in possible_moves:
-            possible_moves.remove(estadoAtual.pai.posicao)
+        # if len(possible_moves) >= 2 and estadoAtual.pai.posicao in possible_moves:
+        #     possible_moves.remove(estadoAtual.pai.posicao)
 
         # É altura de sair eliminar sucessores que nos afastem da saida
         if len(possible_moves) >= 2 and estadoAtual.pessoasSalvas == k:
-            sucessorProximoSaida = saidaMaisProxima(possible_moves)
+            caminho = refazerCaminho(estadoAtual)
+            print(" ")
+            print(caminho)
+            imprimeGrelha2(caminho, grelha)
+            print(f"Pos: {estadoAtual}")
+            sucessorProximoSaida = saidaMaisProxima(possible_moves, portas)
             possible_moves.clear()
             possible_moves.append(sucessorProximoSaida)
             return possible_moves
@@ -227,13 +353,14 @@ def bfs(grelha, estado, portas, k):
         #imprimeGrelha(estadoAtual, grelha)
         #print(f"Custo Total: {estadoAtual.custoTotal}")
 
-        if pessoaEncontrada(estadoAtual, grelha) and len(solucao) < k:
+        # Continuar a procurar pessoas enquanto n tivermos K
+        if pessoaEncontrada(estadoAtual, grelha) and estadoAtual.pessoasSalvas < k:
             if estadoAtual.posicao not in salvos:
                 #print("##########")
                 #imprimeGrelha(estadoAtual, grelha)
-                #print(f"Pos: {estadoAtual.posicao}")
-                caminho = refazerCaminho(estadoAtual)
-                #print(caminho)
+                # print(f"Pos: {estadoAtual.posicao}")
+                # caminho = refazerCaminho(estadoAtual)
+                # print(caminho)
                 #imprimeGrelha2(caminho, grelha)
                 #print(f"Tempo: {estadoAtual.tempoTotal}")
                 salvos.add(estadoAtual.posicao)
@@ -245,16 +372,21 @@ def bfs(grelha, estado, portas, k):
                 #print(f"Custo Total: {estadoAtual.custoTotal}")
                 if estadoAtual.pessoasSalvas < k:
                     solucao.append(estadoAtual)
+                    caminho = refazerCaminho(estadoAtual)
+                    print(caminho)
 
                 # Cortamos os Estados Anteriores que já não nos interessam continuamos a BFS do estado Atual
                 queue.clear()
                 queue.append(estadoAtual)
 
                 #input("Press Enter to continue to the next person...")  # Wait for user to press Enter
-        elif estadoAtual.tempoTotal <= int(len(grelha)/2) + 1 and estadoAtual.posicao in portas:
+                #elif estadoAtual.tempoTotal <= int(len(grelha) / 2) and estadoAtual.posicao in portas and estadoAtual.pessoasSalvas == k:
+        elif estadoAtual.tempoTotal <= int(len(grelha) / 2) and estadoAtual.posicao in portas and estadoAtual.pessoasSalvas == k:
             # Adicionar custo de sair da grelha
             estadoAtual.custoTotal += 1
             solucao.append(estadoAtual)
+            caminho = refazerCaminho(estadoAtual)
+            print(caminho)
             #print("Fim")
             return solucao
 
@@ -287,8 +419,8 @@ def bfs(grelha, estado, portas, k):
                     #imprimeGrelha(estadoGerado, grelha)
         else:
             sucessores = gerarSucessores(grelha, portas, estadoAtual, k)
-            #print(sucessores)
-            sucessores = sorted(sucessores, key=lambda pos: custoMovimento(pos[0], pos[1], grelha))
+            #print(f"Pos EstadoAtual: {estadoAtual.posicao}, Sucessores: {sucessores}")
+            #sucessores = sorted(sucessores, key=lambda pos: custoMovimento(pos[0], pos[1], grelha))
             if sucessores:
                 for (sx, sy) in sucessores:
                     if (sx, sy) not in salvos:
@@ -300,23 +432,133 @@ def bfs(grelha, estado, portas, k):
                         queue.append(estadoGerado)
                         #imprimeGrelha(estadoGerado, grelha)
 
-    return "Solucao nao encontrada"
+    return solucao
+
+
+def get_exits(grid):
+    # Calculate grid size
+    rows = len(grid)
+    cols = len(grid[0]) if rows > 0 else 0
+
+    # List of relative exit positions (fixed positions based on a smaller grid)
+    exits = [(0, cols // 2), (rows - 1, cols // 2), (rows // 2, 0), (rows // 2, cols - 1)]
+
+    return exits
 
 
 
 # portas
-portas = [(0, 2), (4, 2), (2, 0), (2, 4)]
+#portas = [(0, 2), (4, 2), (2, 0), (2, 4)]
 
 # self, grelha, pai=None, movimento=None, geracao=1, nivel=0, expansao=0):
 
-# Inicialização do objeto do estado
-estadoInicial = EstadoGrelha(geracao=geracao)
-#imprimeGrelha(estadoInicial, grelha)
+# Display available grid options to the user
+print("Select a grid:")
+for i, grid in enumerate(grelha):
+    print(f"{i + 1}. Grid {i + 1}")
 
-k = 2
-# Executar a procura em Largura
+# Let the user select a grid
+grid_choice = int(input("Enter the number of the grid you want to use: "))
 
-# Record start time
+# Switch logic
+if grid_choice == 1:
+    grelha = grelha[grid_choice - 1]
+    print("You have selected Grid 1")
+    estadoInicial = EstadoGrelha(geracao=geracao, tempototal=10)
+    imprimeGrelha(estadoInicial, grelha)
+    portas = get_exits(grelha)
+    print("Exits for grid1:", portas)
+    k = 2
+elif grid_choice == 2:
+    grelha = grelha[grid_choice - 1]
+    print("You have selected Grid 2")
+    estadoInicial = EstadoGrelha(geracao=geracao, tempototal=20)
+    imprimeGrelha(estadoInicial, grelha)
+    portas = get_exits(grelha)
+    print("Exits for grid1:", portas)
+    k = 3
+elif grid_choice == 3:
+    grelha = grelha[grid_choice - 1]
+    print("You have selected Grid 3")
+    estadoInicial = EstadoGrelha(geracao=geracao, tempototal=15)
+    imprimeGrelha(estadoInicial, grelha)
+    portas = get_exits(grelha)
+    print("Exits for grid1:", portas)
+    k = 3
+elif grid_choice == 4:
+    grelha = grelha[grid_choice - 1]
+    print("You have selected Grid 3")
+    estadoInicial = EstadoGrelha(geracao=geracao, tempototal=20)
+    imprimeGrelha(estadoInicial, grelha)
+    portas = get_exits(grelha)
+    print("Exits for grid1:", portas)
+    k = 4
+elif grid_choice == 5:
+    grelha = grelha[grid_choice - 1]
+    print("You have selected Grid 2")
+    estadoInicial = EstadoGrelha(geracao=geracao, tempototal=19)
+    imprimeGrelha(estadoInicial, grelha)
+    portas = get_exits(grelha)
+    print("Exits for grid1:", portas)
+    k = 4
+elif grid_choice == 6:
+    grelha = grelha[grid_choice - 1]
+    print("You have selected Grid 3")
+    estadoInicial = EstadoGrelha(geracao=geracao, tempototal=48)
+    imprimeGrelha(estadoInicial, grelha)
+    portas = get_exits(grelha)
+    k = 6
+elif grid_choice == 7:
+    grelha = grelha[grid_choice - 1]
+    print("You have selected Grid 3")
+    estadoInicial = EstadoGrelha(geracao=geracao, tempototal=120)
+    imprimeGrelha(estadoInicial, grelha)
+    portas = get_exits(grelha)
+    print("Exits for grid1:", portas)
+    k = 10
+elif grid_choice == 8:
+    grelha = grelha[grid_choice - 1]
+    print("You have selected Grid 2")
+    estadoInicial = EstadoGrelha(geracao=geracao, tempototal=30)
+    imprimeGrelha(estadoInicial, grelha)
+    portas = get_exits(grelha)
+    print("Exits for grid1:", portas)
+    k = 10
+elif grid_choice == 9:
+    grelha = grelha[grid_choice - 1]
+    print("You have selected Grid 3")
+    estadoInicial = EstadoGrelha(geracao=geracao, tempototal=45)
+    imprimeGrelha(estadoInicial, grelha)
+    portas = get_exits(grelha)
+    print("Exits for grid1:", portas)
+    k = 10
+elif grid_choice == 10:
+    grelha= grelha[grid_choice - 1]
+    print("You have selected Grid 3")
+    estadoInicial = EstadoGrelha(geracao=geracao, tempototal=45)
+    imprimeGrelha(estadoInicial, grelha)
+    portas = get_exits(grelha)
+    print("Exits for grid1:", portas)
+    k = 15
+else:
+    print("Invalid selection. Please choose a valid grid number.")
+
+# # Inicialização do objeto do estado
+# estadoInicial = EstadoGrelha(geracao=geracao)
+# imprimeGrelha(estadoInicial, grelha)
+#
+# portas = get_exits(grelha)
+#
+# print("Exits for grid1:", portas)
+
+
+
+
+
+# k = 2
+# # Executar a procura em Largura
+#
+# # Record start time
 start_time = time.time()
 
 solucaoFinal = bfs(grelha, estadoInicial, portas, k)
@@ -328,7 +570,8 @@ total = len(solucaoFinal)
 for index, item in enumerate(solucaoFinal):
     if index == 0:
         caminho = refazerCaminho(item)
-        #print(caminho)
+        print(" ")
+        print(caminho)
         print(f"Parte {index + 1}, passos: {len(caminho)}")
         imprimeGrelha2(caminho, grelha)
         print(f"Tempo: {item.tempoTotal} ({index + 1}/{total}), custo: {item.custoTotal}")
@@ -337,7 +580,8 @@ for index, item in enumerate(solucaoFinal):
         caminho_anterior = len(refazerCaminho(item_anterior))
         caminho = refazerCaminho(item)
         passos = len(caminho) - caminho_anterior + 1
-        #print(caminho)
+        print(" ")
+        print(caminho)
         print(f"Parte {index + 1}, passos: {passos}")
         imprimeGrelha2(caminho, grelha)
         print(f"Tempo: {item.tempoTotal} ({index + 1}/{total}), custo: {item.custoTotal}")
