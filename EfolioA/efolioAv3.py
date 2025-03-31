@@ -272,7 +272,7 @@ def gerarSucessoresIniciais(grelha, portas):
 
     return successors
 
-def gerarSucessores(grelha, portas, estadoAtual, k):
+def gerarSucessores(grelha, portas, estadoAtual, k, objetivo):
     # Define the possible movement directions: up, down, left, right
     directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # (dy, dx) for up, down, left, right
 
@@ -303,7 +303,9 @@ def gerarSucessores(grelha, portas, estadoAtual, k):
         #     possible_moves.remove(estadoAtual.pai.posicao)
 
         # É altura de sair eliminar sucessores que nos afastem da saida
-        if len(possible_moves) >= 2 and estadoAtual.pessoasSalvas == k:
+        # if len(possible_moves) >= 2 and estadoAtual.pessoasSalvas == k:
+        if objetivo == "Sair":
+            print("É para Sair !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             caminho = refazerCaminho(estadoAtual)
             print(" ")
             print(caminho)
@@ -343,6 +345,7 @@ def bfs(grelha, estado, portas, k):
     queue = deque([estado])
     solucao = []
    # salvos = 0
+    objetivo = "Salvar"
 
     while queue:
         estadoAtual = queue.popleft()
@@ -383,6 +386,7 @@ def bfs(grelha, estado, portas, k):
                 #elif estadoAtual.tempoTotal <= int(len(grelha) / 2) and estadoAtual.posicao in portas and estadoAtual.pessoasSalvas == k:
         elif estadoAtual.tempoTotal <= int(len(grelha) / 2) and estadoAtual.posicao in portas and estadoAtual.pessoasSalvas == k:
             # Adicionar custo de sair da grelha
+            objetivo = "Sair"
             estadoAtual.custoTotal += 1
             solucao.append(estadoAtual)
             caminho = refazerCaminho(estadoAtual)
@@ -418,7 +422,7 @@ def bfs(grelha, estado, portas, k):
                     queue.append(estadoGerado)
                     #imprimeGrelha(estadoGerado, grelha)
         else:
-            sucessores = gerarSucessores(grelha, portas, estadoAtual, k)
+            sucessores = gerarSucessores(grelha, portas, estadoAtual, k, objetivo)
             #print(f"Pos EstadoAtual: {estadoAtual.posicao}, Sucessores: {sucessores}")
             #sucessores = sorted(sucessores, key=lambda pos: custoMovimento(pos[0], pos[1], grelha))
             if sucessores:
