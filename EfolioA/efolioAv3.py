@@ -247,6 +247,27 @@ def manhattan_distance(start, exit):
     return abs(start[0] - exit[0]) + abs(start[1] - exit[1])
 
 
+def find_closest_start_coords(start_coords, end_coords):
+    min_distance = float('inf')  # Initialize with a very large number
+    closest_start_coords = []  # List to store the initial coordinates with the least distance
+
+    # Iterate over all start coordinates
+    for start in start_coords:
+        for end in end_coords:
+            # Calculate the Manhattan distance between the start and the end
+            distance = manhattan_distance(start, end)
+
+            # If a smaller distance is found, update min_distance and reset the closest list
+            if distance < min_distance:
+                min_distance = distance
+                closest_start_coords = [start]  # Start a new list with the current start
+            # If the distance is the same as the current min_distance, add the start to the list
+            elif distance == min_distance:
+                closest_start_coords.append(start)
+
+    return closest_start_coords
+
+
 def saidaMaisProxima(coordinates, portas):
     # List of possible exits
     #saidas = [(0, 2), (2, 0), (4, 2), (2, 4)]
@@ -269,7 +290,7 @@ def saidaMaisProxima(coordinates, portas):
 
 
 
-def gerarSucessoresIniciais(grelha, portas):
+def gerarSucessoresIniciais(grelha, portas, localizacao):
     successors = []  # To store the positions where 'X' will be placed
 
     # Generate successors for each starting point
@@ -278,9 +299,11 @@ def gerarSucessoresIniciais(grelha, portas):
         if grelha[sx][sy] != 10:
             successors.append((sx, sy))  # Append the coordinates of the 'X'
 
-    return successors
+    mais_perto = find_closest_start_coords(successors, localizacao)
 
-def gerarSucessores(grelha, portas, estadoAtual, k, objetivo):
+    return mais_perto
+
+def gerarSucessores(grelha, portas, estadoAtual, k, objetivo, localizacao):
     # Define the possible movement directions: up, down, left, right
     directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # (dy, dx) for up, down, left, right
 
@@ -430,7 +453,7 @@ def bfs(grelha, estado, portas, k, localizacao):
                     queue.append(estadoGerado)
                     #imprimeGrelha(estadoGerado, grelha)
         else:
-            sucessores = gerarSucessores(grelha, portas, estadoAtual, k, objetivo)
+            sucessores = gerarSucessores(grelha, portas, estadoAtual, k, objetivo, localizacao)
             #print(f"Pos EstadoAtual: {estadoAtual.posicao}, Sucessores: {sucessores}")
             #sucessores = sorted(sucessores, key=lambda pos: custoMovimento(pos[0], pos[1], grelha))
             if sucessores:
@@ -607,6 +630,8 @@ for index, item in enumerate(solucaoFinal):
         print(f"Parte {index + 1}, passos: {len(caminho)}")
         imprimeGrelha2(caminho, grelha)
         print(f"Tempo: {item.tempoTotal} ({index + 1}/{total}), custo: {item.custoTotal}")
+        print(f"Expansoes: {item.expansao}")
+        print(f"Geracoes: {item.geracao}")
     else:
         item_anterior = solucaoFinal[index - 1]
         caminho_anterior = len(refazerCaminho(item_anterior))
@@ -617,5 +642,7 @@ for index, item in enumerate(solucaoFinal):
         print(f"Parte {index + 1}, passos: {passos}")
         imprimeGrelha2(caminho, grelha)
         print(f"Tempo: {item.tempoTotal} ({index + 1}/{total}), custo: {item.custoTotal}")
+        print(f"Expansoes: {item.expansao}")
+        print(f"Geracoes: {item.geracao}")
 
 print(f"\nTime taken to find the solution: {elapsed_time:.4f} seconds")
