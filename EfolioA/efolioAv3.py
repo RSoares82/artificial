@@ -222,6 +222,14 @@ def imprimeGrelha2(caminho, grelha):
     for row in transformaGrelha:
         print(row)
 
+def coordenadasPessoas(grid):
+    pessoas = []  # List to store coordinates of negative numbers
+    for row_idx, row in enumerate(grid):
+        for col_idx, valor in enumerate(row):
+            if valor < 0:  # Check if the value is negative
+                pessoas.append((row_idx, col_idx))  # Store the coordinates
+    return pessoas
+
 
 def refazerCaminho(estadoAtual):
     caminho = []
@@ -338,7 +346,7 @@ def custoMovimento(sx, sy, grelha):
         return 1
 
 
-def bfs(grelha, estado, portas, k):
+def bfs(grelha, estado, portas, k, localizacao):
     global expansao
     global geracao
     salvos = set()
@@ -406,7 +414,7 @@ def bfs(grelha, estado, portas, k):
 
 
         if estadoAtual.geracao == 1:
-            sucessores = gerarSucessoresIniciais(grelha, portas)
+            sucessores = gerarSucessoresIniciais(grelha, portas, localizacao)
             # Ordenar Sucessores por Custo
             sucessores = sorted(sucessores, key=lambda pos: custoMovimento(pos[0], pos[1], grelha))
             #print(sucessores)
@@ -468,6 +476,8 @@ grid_choice = int(input("Enter the number of the grid you want to use: "))
 if grid_choice == 1:
     grelha = grelha[grid_choice - 1]
     print("You have selected Grid 1")
+    localizacaoPessoas = coordenadasPessoas(grelha)
+    print(f"Localizações: {localizacaoPessoas} ")
     estadoInicial = EstadoGrelha(geracao=geracao, tempototal=10)
     imprimeGrelha(estadoInicial, grelha)
     portas = get_exits(grelha)
@@ -476,6 +486,8 @@ if grid_choice == 1:
 elif grid_choice == 2:
     grelha = grelha[grid_choice - 1]
     print("You have selected Grid 2")
+    localizacaoPessoas = coordenadasPessoas(grelha)
+    print(f"Localizações: {localizacaoPessoas} ")
     estadoInicial = EstadoGrelha(geracao=geracao, tempototal=20)
     imprimeGrelha(estadoInicial, grelha)
     portas = get_exits(grelha)
@@ -484,6 +496,8 @@ elif grid_choice == 2:
 elif grid_choice == 3:
     grelha = grelha[grid_choice - 1]
     print("You have selected Grid 3")
+    localizacaoPessoas = coordenadasPessoas(grelha)
+    print(f"Localizações: {localizacaoPessoas} ")
     estadoInicial = EstadoGrelha(geracao=geracao, tempototal=15)
     imprimeGrelha(estadoInicial, grelha)
     portas = get_exits(grelha)
@@ -492,6 +506,8 @@ elif grid_choice == 3:
 elif grid_choice == 4:
     grelha = grelha[grid_choice - 1]
     print("You have selected Grid 3")
+    localizacaoPessoas = coordenadasPessoas(grelha)
+    print(f"Localizações: {localizacaoPessoas} ")
     estadoInicial = EstadoGrelha(geracao=geracao, tempototal=20)
     imprimeGrelha(estadoInicial, grelha)
     portas = get_exits(grelha)
@@ -500,6 +516,8 @@ elif grid_choice == 4:
 elif grid_choice == 5:
     grelha = grelha[grid_choice - 1]
     print("You have selected Grid 2")
+    localizacaoPessoas = coordenadasPessoas(grelha)
+    print(f"Localizações: {localizacaoPessoas} ")
     estadoInicial = EstadoGrelha(geracao=geracao, tempototal=19)
     imprimeGrelha(estadoInicial, grelha)
     portas = get_exits(grelha)
@@ -508,6 +526,8 @@ elif grid_choice == 5:
 elif grid_choice == 6:
     grelha = grelha[grid_choice - 1]
     print("You have selected Grid 3")
+    localizacaoPessoas = coordenadasPessoas(grelha)
+    print(f"Localizações: {localizacaoPessoas} ")
     estadoInicial = EstadoGrelha(geracao=geracao, tempototal=48)
     imprimeGrelha(estadoInicial, grelha)
     portas = get_exits(grelha)
@@ -515,6 +535,8 @@ elif grid_choice == 6:
 elif grid_choice == 7:
     grelha = grelha[grid_choice - 1]
     print("You have selected Grid 3")
+    localizacaoPessoas = coordenadasPessoas(grelha)
+    print(f"Localizações: {localizacaoPessoas} ")
     estadoInicial = EstadoGrelha(geracao=geracao, tempototal=120)
     imprimeGrelha(estadoInicial, grelha)
     portas = get_exits(grelha)
@@ -523,6 +545,8 @@ elif grid_choice == 7:
 elif grid_choice == 8:
     grelha = grelha[grid_choice - 1]
     print("You have selected Grid 2")
+    localizacaoPessoas = coordenadasPessoas(grelha)
+    print(f"Localizações: {localizacaoPessoas} ")
     estadoInicial = EstadoGrelha(geracao=geracao, tempototal=30)
     imprimeGrelha(estadoInicial, grelha)
     portas = get_exits(grelha)
@@ -531,6 +555,8 @@ elif grid_choice == 8:
 elif grid_choice == 9:
     grelha = grelha[grid_choice - 1]
     print("You have selected Grid 3")
+    localizacaoPessoas = coordenadasPessoas(grelha)
+    print(f"Localizações: {localizacaoPessoas} ")
     estadoInicial = EstadoGrelha(geracao=geracao, tempototal=45)
     imprimeGrelha(estadoInicial, grelha)
     portas = get_exits(grelha)
@@ -539,6 +565,8 @@ elif grid_choice == 9:
 elif grid_choice == 10:
     grelha= grelha[grid_choice - 1]
     print("You have selected Grid 3")
+    localizacaoPessoas = coordenadasPessoas(grelha)
+    print(f"Localizações: {localizacaoPessoas} ")
     estadoInicial = EstadoGrelha(geracao=geracao, tempototal=45)
     imprimeGrelha(estadoInicial, grelha)
     portas = get_exits(grelha)
@@ -565,7 +593,7 @@ else:
 # # Record start time
 start_time = time.time()
 
-solucaoFinal = bfs(grelha, estadoInicial, portas, k)
+solucaoFinal = bfs(grelha, estadoInicial, portas, k, localizacaoPessoas)
 
 end_time = time.time()
 elapsed_time = end_time - start_time
