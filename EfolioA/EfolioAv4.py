@@ -138,26 +138,27 @@ geracao = 1
 
 # Define o Estado da Grelha
 class Estado:
-    def __init__(self, posicao, pai=None, acao=None, custo=0):
+    def __init__(self, posicao, pai=None, acao=None, custo=0, tempo=None):
         self.posicao = posicao
         self.pai = pai
         self.acao = acao
         self.custo = custo
+        self.tempo = tempo
 
     # To compare nodes based on path cost for the priority queue
     def __lt__(self, other):
         return self.custo < other.custo
 
 class Problema:
-    def __init__(self, pos_inicial, objetivo, grelha, tamanho_grelha, funcao_custo):
+    def __init__(self, pos_inicial, grelha, tamanho_grelha, funcao_custo):
         self.pos_inicial = pos_inicial
-        self.objetivo = objetivo
         self.grelha = grelha
         self.tamanho_grelha = tamanho_grelha  # Size of the grid (5x5)
         self.funcao_custo = funcao_custo  # A function to get the cost of an action
 
+
     def verifica_objetivo(self, estado):
-        if self.grelha[estado.posicao[0]][estado.posicao[1]] == -1:
+        if self.grelha[estado.posicao[0]][estado.posicao[1]] < 0:
             return True
 
     def gerar_sucessores(self, estado):
@@ -175,7 +176,7 @@ class Problema:
             # Check if the next state is within grid bounds
             if 0 <= pos_prox_estado[0] < len(self.grelha) and 0 <= pos_prox_estado[1] < len(self.grelha[0]):
                 custo = self.funcao_custo(estado.posicao, pos_prox_estado)
-                child_node = Estado(posicao=pos_prox_estado, pai=estado, acao=acao, custo=estado.custo + custo)
+                child_node = Estado(posicao=pos_prox_estado, pai=estado, acao=acao, custo=estado.custo + custo, tempo=estado.tempo - custo)
                 filhos.append(child_node)
         return filhos
 
@@ -379,13 +380,16 @@ def custo_movimento(estado, prox_estado):
     else:
         return 1
 
-def custo_uniforme(problema):
+def custo_uniforme(problema, tempo, k):
+    global expansao
+    global geracao
     # Create initial node
-    estado = Estado(posicao=problema.pos_inicial, custo=0)
+    estado = Estado(posicao=problema.pos_inicial, custo=1, tempo=tempo - 1)
 
     # Priority Queue (Min-Heap)
     fronteira = []
     heapq.heappush(fronteira, estado)
+
 
     # Set of reached states to avoid revisiting
     visitado = set()
@@ -394,9 +398,11 @@ def custo_uniforme(problema):
     while fronteira:
         # Pop the node with the least cost
         estado = heapq.heappop(fronteira)
+        expansao += 1
 
         # If it's a goal node, return it
         if problema.verifica_objetivo(estado):
+
             return estado
 
         # Expand the node and add children to the frontier
@@ -404,6 +410,7 @@ def custo_uniforme(problema):
             if filho.posicao not in visitado:
                 visitado.add(filho.posicao)
                 heapq.heappush(fronteira, filho)
+                geracao += 1
 
     return None
 
@@ -440,25 +447,34 @@ if grid_choice == 1:
     grelha = grelha[grid_choice - 1]
     print("You have selected Grid 1")
     tamanho_grelha = tamanhoGrelha(grelha[0])
-    objetivo = (0, 3)
     print(tamanho_grelha)
+    tempo = 10
+    k = 2
+elif grid_choice == 2:
+    grelha = grelha[grid_choice - 1]
+    print("You have selected Grid 2")
+    tamanho_grelha = tamanhoGrelha(grelha[0])
+    print(tamanho_grelha)
+    k = 3
 
 start_time = time.time()
 
-objetivo = (0, 3)
-
 # solucaoFinal = bfs(grelha, estadoInicial, portas, k)
 # Create a problem instance
-problema = Problema(pos_inicial=(2,0), objetivo=objetivo, grelha=grelha, tamanho_grelha=tamanho_grelha, funcao_custo=custo_movimento)
+problema = Problema(pos_inicial=(2,0), grelha=grelha, tamanho_grelha=tamanho_grelha, funcao_custo=custo_movimento)
 
 # Run the Uniform-Cost Search
-resultado = custo_uniforme(problema)
+resultado = custo_uniforme(problema, tempo, k)
 
 # Print the result path
 if resultado:
     caminho = refazerCaminho(resultado)
     print(caminho)
     imprimeGrelha2(caminho, grelha)
+    #print(f"Tempo: {resultado.custo} ({index + 1}/{total}), custo: {item.custoTotal}")
+    print(f"Tempo: {resultado.tempo}, custo: {resultado.custo}")
+    print(f"Expansoes: {expansao}")
+    print(f"Geracoes: {geracao}")
 else:
     print("No solution found")
 
